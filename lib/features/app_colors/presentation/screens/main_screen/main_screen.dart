@@ -6,6 +6,7 @@ import 'package:yummy/features/app_colors/presentation/screens/main_screen/pages
 
 import 'pages/colors_palette.dart';
 import 'pages/left_side_bar.dart';
+import 'pages/tools_bar.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -31,16 +32,20 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
       backgroundColor: AppColors.mainLight,
       body: Row(
-        children: const <Widget>[
-          SizedBox(
+        children: <Widget>[
+          const SizedBox(
             width: _leftBarWidth,
             child: LeftSideBar(),
           ),
           Expanded(
-            // width: centerBarWidth,
-            child: ColorPalette(),
+            child: Stack(
+              children: const <Widget>[
+                ColorPalette(),
+                ToolsBar(),
+              ],
+            ),
           ),
-          SizedBox(
+          const SizedBox(
             width: _rightBarWidth,
             child: RightSideBar(),
           ),
