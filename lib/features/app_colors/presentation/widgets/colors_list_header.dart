@@ -23,24 +23,10 @@ class _ColorsListHeaderState extends State<ColorsListHeader> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 35,
-      decoration: const BoxDecoration(
-        color: AppColors.midLight,
-        borderRadius: BorderRadius.only(
-          topRight: Radius.circular(10),
-          bottomRight: Radius.circular(10),
-          bottomLeft: Radius.circular(10),
-        ),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 6),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: _selectMode(context),
-        ),
-      ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: _selectMode(context),
     );
   }
 

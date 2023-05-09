@@ -5,26 +5,17 @@ import 'package:yummy/features/app_colors/presentation/widgets/colors_list_item.
 
 import '../../../../../../core/theme/app_colors.dart';
 import '../../../widgets/colors_list_header.dart';
+import '../../../widgets/tool_page.dart';
 
 class LeftSideBar extends StatelessWidget {
   const LeftSideBar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        color: AppColors.midDark,
-        borderRadius: BorderRadius.only(
-          topRight: Radius.circular(10),
-          bottomRight: Radius.circular(10),
-        ),
-      ),
-      child: Column(
-        children: <Widget>[
-          _buildHeader(context),
-          _buildBody(context),
-        ],
-      ),
+    return ToolPage(
+      header: _buildHeader(context),
+      body: _buildBody(context),
+      side: ToolPageSide.left,
     );
   }
 
