@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:yummy/features/app_colors/domain/entities/color_names.dart';
@@ -72,57 +71,61 @@ class ColorPalette extends StatelessWidget {
           hasScrollBody: false,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                _buildMainPalette(context, item),
-                const SizedBox(height: 15),
-                _buildTargetPalette(item),
-                const SizedBox(height: 15),
-                _buildVariantPalette(
-                  name: 'Main Light',
-                  textColor: item.mainLight,
-                  item: item,
-                ),
-                const SizedBox(height: 5),
-                _buildVariantPalette(
-                  name: 'Mid Light',
-                  textColor: item.midLight,
-                  item: item,
-                ),
-                const SizedBox(height: 5),
-                _buildVariantPalette(
-                  name: 'Mid Dark',
-                  textColor: item.midDark,
-                  item: item,
-                ),
-                const SizedBox(height: 5),
-                _buildVariantPalette(
-                  name: 'Main Dark',
-                  textColor: item.mainDark,
-                  item: item,
-                ),
-                const SizedBox(height: 15),
-                _buildVariantPalette(
-                  name: 'Act Info',
-                  textColor: item.actInfo,
-                  item: item,
-                ),
-                const SizedBox(height: 5),
-                _buildVariantPalette(
-                  name: 'Act Success',
-                  textColor: item.actSuccess,
-                  item: item,
-                ),
-                const SizedBox(height: 5),
-                _buildVariantPalette(
-                  name: 'Act Wrong',
-                  textColor: item.actWrong,
-                  item: item,
-                ),
-              ],
-            ),
+            child: _buildPalettes(context, item),
           ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildPalettes(BuildContext context, ColorsEntity item) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        _buildMainPalette(context, item),
+        const SizedBox(height: 15),
+        _buildTargetPalette(item),
+        const SizedBox(height: 15),
+        _buildVariantPalette(
+          name: 'Main Light',
+          textColor: item.mainLight,
+          item: item,
+        ),
+        const SizedBox(height: 5),
+        _buildVariantPalette(
+          name: 'Mid Light',
+          textColor: item.midLight,
+          item: item,
+        ),
+        const SizedBox(height: 5),
+        _buildVariantPalette(
+          name: 'Mid Dark',
+          textColor: item.midDark,
+          item: item,
+        ),
+        const SizedBox(height: 5),
+        _buildVariantPalette(
+          name: 'Main Dark',
+          textColor: item.mainDark,
+          item: item,
+        ),
+        const SizedBox(height: 15),
+        _buildVariantPalette(
+          name: 'Act Info',
+          textColor: item.actInfo,
+          item: item,
+        ),
+        const SizedBox(height: 5),
+        _buildVariantPalette(
+          name: 'Act Success',
+          textColor: item.actSuccess,
+          item: item,
+        ),
+        const SizedBox(height: 5),
+        _buildVariantPalette(
+          name: 'Act Wrong',
+          textColor: item.actWrong,
+          item: item,
         ),
       ],
     );
