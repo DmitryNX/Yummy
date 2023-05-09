@@ -1,35 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:yummy/features/app_colors/presentation/widgets/tool_page.dart';
 
 import '../../../../../../core/theme/app_colors.dart';
 import '../../../bloc/colors_cubit.dart';
-import '../../../widgets/property_header.dart';
 
 class RightSideBar extends StatelessWidget {
   const RightSideBar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        color: AppColors.midDark,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(10),
-          bottomLeft: Radius.circular(10),
-        ),
-      ),
-      child: Column(
-        children: <Widget>[
-          _buildHeader(context),
-          _buildBody(context),
-        ],
-      ),
+    return ToolPage(
+      header: _buildHeader(context),
+      body: _buildBody(context),
+      side: ToolPageSide.right,
     );
   }
 
   Widget _buildHeader(BuildContext context) {
-    return const PropertyHeader();
+    return const Text(
+      'Properties',
+      style: TextStyle(
+        color: AppColors.mainDark,
+      ),
+    );
   }
 
   Widget _buildBody(BuildContext context) {
