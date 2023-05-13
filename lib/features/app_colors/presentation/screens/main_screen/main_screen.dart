@@ -29,23 +29,23 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       backgroundColor: AppColors.mainLight,
       body: Row(
         children: <Widget>[
-          const SizedBox(
+          SizedBox(
             width: _leftBarWidth,
             child: LeftSideBar(),
           ),
           Expanded(
             child: Column(
-              children: const <Widget>[
+              children: <Widget>[
                 Expanded(child: ColorPalette()),
                 ToolsBar(),
               ],
             ),
           ),
-          const SizedBox(
+          SizedBox(
             width: _rightBarWidth,
             child: RightSideBar(),
           ),
