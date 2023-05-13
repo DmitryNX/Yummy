@@ -76,6 +76,13 @@ class ColorsCubit extends Cubit<ColorsState> {
     }
   }
 
+  ColorsEntity? getCurrentColorSet() {
+    if (_isLoadedState()) {
+      return _getLoadedStateUnchecked().currentColorsEntity;
+    }
+    return null;
+  }
+
   Future<void> removeColorSet(ColorsEntityId id) async {
     if (!_isLoadedState()) return;
 
