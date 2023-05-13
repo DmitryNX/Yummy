@@ -42,20 +42,25 @@ class ColorsCubit extends Cubit<ColorsState> {
     result.fold(
       _failureHandler,
       (items) {
-        final currentIndex = _fixCurrentIndex(
-          index: oldState?.currentIndex ?? 0,
-          itemsCount: items.length,
-        );
-        emit(
-          oldState?.copyWith(
-                items: items,
-                currentIndex: currentIndex,
-              ) ??
-              LoadedColorsState(
-                items: items,
-                currentIndex: currentIndex,
-              ),
-        );
+        if (items.isEmpty) {
+          emit(EmptyColorsState());
+        }
+        else {
+          final currentIndex = _fixCurrentIndex(
+            index: oldState?.currentIndex ?? 0,
+            itemsCount: items.length,
+          );
+          emit(
+            oldState?.copyWith(
+              items: items,
+              currentIndex: currentIndex,
+            ) ??
+                LoadedColorsState(
+                  items: items,
+                  currentIndex: currentIndex,
+                ),
+          );
+        }
       },
     );
   }
@@ -92,6 +97,11 @@ class ColorsCubit extends Cubit<ColorsState> {
     List<ColorsEntity> items =
         oldState.items.where((item) => item.name != id).toList();
 
+    if (items.isEmpty) {
+      emit(EmptyColorsState());
+      return;
+    }
+
     final currentIndex = _getCurrentIndex();
     emit(LoadingColorsState());
     result.fold(
@@ -124,10 +134,18 @@ class ColorsCubit extends Cubit<ColorsState> {
   }
 
   bool validateColorsSetName(String name) {
-    if (name.isEmpty || !_isLoadedState()) {
+    if (name.isEmpty) {
       return false;
     }
-    return !_getLoadedStateUnchecked().items.any((item) => item.name == name);
+    if (state is EmptyColorsState) {
+      return true;
+    }
+    return _isLoadedState() && _nameIsNotContains(name);
+  }
+
+  bool _nameIsNotContains(String name) {
+    return !_getLoadedStateUnchecked().items
+        .any((item) => item.name == name);
   }
 
   Future<void> calculateColorSet({
