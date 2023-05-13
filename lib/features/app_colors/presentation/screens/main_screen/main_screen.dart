@@ -38,9 +38,9 @@ class _MainScreenState extends State<MainScreen> {
             child: LeftSideBar(),
           ),
           Expanded(
-            child: Stack(
+            child: Column(
               children: const <Widget>[
-                ColorPalette(),
+                Expanded(child: ColorPalette()),
                 ToolsBar(),
               ],
             ),
