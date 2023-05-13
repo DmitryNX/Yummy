@@ -4,13 +4,20 @@ class ColorConverter {
   ColorConverter._();
 
   static String toHex(Color value) {
-    return '#${
-      _byteToHex(value.alpha)}${
-      _byteToHex(value.red)}${
-      _byteToHex(value.green)}${
-      _byteToHex(value.blue)
-    }';
+    return '#${_toHexBase(value)}';
   }
+
+  static String toHexValue(Color value) {
+    return '0x${_toHexBase(value)}';
+  }
+
+  static String _toHexBase(Color value) {
+    return _byteToHex(value.alpha) +
+        _byteToHex(value.red) +
+        _byteToHex(value.green) +
+        _byteToHex(value.blue);
+  }
+
 
   static Color? fromHex(String value) {
     if (value.length < 9) return null;
