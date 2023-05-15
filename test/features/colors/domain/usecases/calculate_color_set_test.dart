@@ -1,4 +1,3 @@
-import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -11,26 +10,6 @@ void main() {
   const Color tMainLight = Colors.white;
   const Color tMainDark = Colors.black;
 
-  // Future<void> foldResult(Either<Failure, ColorsModel> result) async {
-  //   result.fold(
-  //     (error) {
-  //       expect(error, isA<Failure>());
-  //     },
-  //     (value) {
-  //       expect(value, isA<ColorsModel>());
-  //       expect(value.name, equals(tName));
-  //       expect(value.mainLight, equals(tMainLight));
-  //       expect(value.mainDark, equals(tMainDark));
-  //
-  //       expect(value.midLight, equals(tMainDark));
-  //       expect(value.midDark, equals(tMainDark));
-  //       expect(value.actInfo, equals(tMainDark));
-  //       expect(value.actSuccess, equals(tMainDark));
-  //       expect(value.actWrong, equals(tMainDark));
-  //     },
-  //   );
-  // }
-
   test('calculate with White and Black', () async {
     // Arrange
     final calculateColorSet = CalculateColorSet();
@@ -42,18 +21,6 @@ void main() {
     final tActInfo = Color.lerp(Colors.blue, midColor, 0.214);
     final tActSuccess = Color.lerp(Colors.green, midColor, 0.214);
     final tActWrong = Color.lerp(Colors.red, midColor, 0.214);
-
-    // final response = {
-    //   "name": "Test",
-    //   "created": "2023-04-07T14:28:50.477203",
-    //   "mainDark": #FF000000,
-    //   "midDark": #FF616161,
-    //   "midLight": #FF9D9D9D,
-    //   "mainLight": #FFFFFFFF,
-    //   "actInfo": #FF3591DA,
-    //   "actSuccess": #FF56A45A,
-    //   "actWrong": #FFDA4F45,
-    // };
 
     // Act
     final result = await calculateColorSet(

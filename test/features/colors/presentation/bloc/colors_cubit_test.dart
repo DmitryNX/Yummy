@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -11,6 +10,7 @@ import 'package:yummy/features/app_colors/domain/usecases/remove_color_set_useca
 import 'package:yummy/features/app_colors/domain/usecases/save_color_set_usecase.dart';
 import 'package:yummy/features/app_colors/presentation/bloc/colors_cubit.dart';
 
+import '../../../../resources.dart';
 @GenerateNiceMocks([
   MockSpec<GetAllColorSets>(),
   MockSpec<SaveColorSet>(),
@@ -47,7 +47,7 @@ void main() {
       // Assign
       final response = generateItems();
       when(mockGetAllColorSets(GetAllColorSetsParams()))
-        .thenAnswer((_) => Future.value(Right(response)));
+          .thenAnswer((_) => Future.value(Right(response)));
 
       final states = [
         LoadingColorsState(),
@@ -96,7 +96,7 @@ void main() {
       final entity = generateItem('test');
 
       when(mockSaveColorSet(any))
-        .thenAnswer((_) => Future.value(const Right(null)));
+          .thenAnswer((_) => Future.value(const Right(null)));
 
       // Act
       await cubit.saveColorSet(entity);
@@ -139,10 +139,10 @@ void main() {
 
       final response = generateItems();
       when(mockGetAllColorSets(GetAllColorSetsParams()))
-        .thenAnswer((_) => Future.value(Right(response)));
+          .thenAnswer((_) => Future.value(Right(response)));
 
       when(mockRemoveColorSet(any))
-        .thenAnswer((_) => Future.value(const Right(null)));
+          .thenAnswer((_) => Future.value(const Right(null)));
 
       await cubit.getAllColorSets();
 
@@ -167,10 +167,10 @@ void main() {
 
       final response = generateItems();
       when(mockGetAllColorSets(GetAllColorSetsParams()))
-        .thenAnswer((_) => Future.value(Right(response)));
+          .thenAnswer((_) => Future.value(Right(response)));
 
-      when(mockRemoveColorSet(any)).thenAnswer((_) =>
-        Future.value(const Left(LocalFailure(errorMessage))));
+      when(mockRemoveColorSet(any)).thenAnswer(
+          (_) => Future.value(const Left(LocalFailure(errorMessage))));
 
       await cubit.getAllColorSets();
 
@@ -195,36 +195,56 @@ void main() {
     () async {
       // Assign
       const id = 'test';
+      const items = <ColorsModel>[];
 
-      when(mockGetAllColorSets(GetAllColorSetsParams()))
-        .thenAnswer((_) => Future.value(const Right([])));
+      when(mockGetAllColorSets(GetAllColorSetsParams())).thenAnswer(
+        (_) => Future.value(const Right(items)),
+      );
 
-      when(mockSaveColorSet(any))
-        .thenAnswer((_) => Future.value(const Right(null)));
+      when(mockSaveColorSet(any)).thenAnswer(
+        (_) => Future.value(const Right(null)),
+      );
+
+      when(mockCalculateColorSet(any)).thenAnswer(
+        (_) => Future.value(Right(colorsModel)),
+      );
+
+      final states = [
+        LoadingColorsState(),
+        EmptyColorsState(),
+        LoadedColorsState(items: [colorsModel]),
+      ];
+
+      // Assert latter
+      expectLater(cubit.stream.asBroadcastStream(), emitsInOrder(states));
 
       // Act
       await cubit.getAllColorSets();
       await cubit.createColorSet(id);
 
       // Assert
+      verify(mockCalculateColorSet(any));
       verify(mockSaveColorSet(any));
-      expect(cubit.state, isA<LoadedColorsState>());
-      expect((cubit.state as LoadedColorsState).items.length, 1);
     },
   );
 
   test(
-    'createColorSet failure',
+    'createColorSet failure on save',
     () async {
       // Assign
       const id = 'test';
 
       final response = generateItems();
       when(mockGetAllColorSets(GetAllColorSetsParams()))
-          .thenAnswer((_) => Future.value(Right(response)));
+        .thenAnswer((_) => Future.value(Right(response)));
 
-      when(mockSaveColorSet(any)).thenAnswer((_) =>
-          Future.value(const Left(LocalFailure(errorMessage))));
+      when(mockCalculateColorSet(any)).thenAnswer(
+        (_) => Future.value(Right(colorsModel)),
+      );
+
+      when(mockSaveColorSet(any)).thenAnswer(
+        (_) => Future.value(const Left(LocalFailure(errorMessage))),
+      );
 
       await cubit.getAllColorSets();
 
@@ -239,37 +259,43 @@ void main() {
       await cubit.createColorSet(id);
 
       // Assert
+      verify(mockCalculateColorSet(any));
       verify(mockSaveColorSet(any));
-      expect(cubit.state, isA<ErrorColorsState>());
     },
   );
-}
 
-List<ColorsModel> generateItems() {
-  final value = generateItem('test 1');
-  return [
-    value,
-    ColorsModel.fromMap(value.toMap()
-      ..['name'] = 'test 2'),
-    ColorsModel.fromMap(value.toMap()
-      ..['name'] = 'test 3'),
-    ColorsModel.fromMap(value.toMap()
-      ..['name'] = 'test 4'),
-    ColorsModel.fromMap(value.toMap()
-      ..['name'] = 'test 5'),
-  ];
-}
+  test(
+    'createColorSet failure on calculate',
+    () async {
+      // Assign
+      const id = 'test';
 
-ColorsModel generateItem(String name) {
-  return ColorsModel(
-    name: name,
-    created: DateTime(2023, 2, 23, 21, 50, 5),
-    mainDark: const Color.fromARGB(255, 12, 33, 104),
-    midDark: const Color.fromARGB(255, 20, 55, 173),
-    midLight: const Color.fromARGB(255, 66, 90, 173),
-    mainLight: const Color.fromARGB(255, 112, 126, 173),
-    actInfo: const Color.fromARGB(255, 17, 68, 170),
-    actSuccess: const Color.fromARGB(255, 4, 132, 157),
-    actWrong: const Color.fromARGB(255, 216, 0, 93),
+      final response = generateItems();
+      when(mockGetAllColorSets(GetAllColorSetsParams()))
+          .thenAnswer((_) => Future.value(Right(response)));
+
+      when(mockCalculateColorSet(any)).thenAnswer(
+        (_) => Future.value(const Left(LocalFailure(errorMessage))),
+      );
+
+      when(mockSaveColorSet(any)).thenAnswer(
+        (_) => Future.value(const Left(LocalFailure(errorMessage))),
+      );
+
+      await cubit.getAllColorSets();
+
+      final states = [
+        const ErrorColorsState(message: errorMessage),
+      ];
+
+      // Assert latter
+      expectLater(cubit.stream.asBroadcastStream(), emitsInOrder(states));
+
+      // Act
+      await cubit.createColorSet(id);
+
+      // Assert
+      verify(mockCalculateColorSet(any));
+    },
   );
 }
