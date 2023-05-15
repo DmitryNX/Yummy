@@ -44,8 +44,7 @@ class ColorsCubit extends Cubit<ColorsState> {
       (items) {
         if (items.isEmpty) {
           emit(EmptyColorsState());
-        }
-        else {
+        } else {
           final currentIndex = _fixCurrentIndex(
             index: oldState?.currentIndex ?? 0,
             itemsCount: items.length,
@@ -54,11 +53,11 @@ class ColorsCubit extends Cubit<ColorsState> {
             oldState?.copyWith(
               items: items,
               currentIndex: currentIndex,
-            ) ??
-                LoadedColorsState(
-                  items: items,
-                  currentIndex: currentIndex,
-                ),
+            )
+            ?? LoadedColorsState(
+              items: items,
+              currentIndex: currentIndex,
+            ),
           );
         }
       },
@@ -120,7 +119,10 @@ class ColorsCubit extends Cubit<ColorsState> {
     final mainLight = ColorGenerator.randomColor();
     final mainDark = ColorGenerator.randomColor();
     final result = await _calculateColorSet(CalculateColorSetParams(
-        name: name, mainLight: mainLight, mainDark: mainDark));
+      name: name,
+      mainLight: mainLight,
+      mainDark: mainDark,
+    ));
 
     result.fold(
       _failureHandler,
