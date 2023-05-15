@@ -40,6 +40,7 @@ dependencies:
   code_text_field: ^1.1.0
   highlight: ^0.7.0
   flutter_highlight: ^0.7.0
+  bitsdojo_window: ^0.1.5
 
 dev_dependencies:
   flutter_test:

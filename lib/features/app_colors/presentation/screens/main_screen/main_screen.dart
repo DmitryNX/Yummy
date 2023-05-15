@@ -1,8 +1,10 @@
+import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:yummy/core/theme/app_colors.dart';
 import 'package:yummy/features/app_colors/presentation/bloc/colors_cubit.dart';
 import 'package:yummy/features/app_colors/presentation/screens/main_screen/pages/right_side_bar.dart';
+import 'package:yummy/features/app_colors/presentation/widgets/app_window_title_bar.dart';
 
 import 'pages/colors_palette.dart';
 import 'pages/left_side_bar.dart';
@@ -29,9 +31,24 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       backgroundColor: AppColors.mainLight,
-      body: Row(
+      body: WindowBorder(
+        width: 1,
+        color: AppColors.mainDark,
+        child: Column(
+          children: <Widget>[
+            const AppWindowTitleBar(),
+            _buildBody(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBody() {
+    return const Expanded(
+      child: Row(
         children: <Widget>[
           SizedBox(
             width: _leftBarWidth,
