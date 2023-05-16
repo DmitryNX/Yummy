@@ -17,19 +17,16 @@ class ToolsBar extends StatefulWidget {
 }
 
 class _ToolsBarState extends State<ToolsBar> {
-  final DraggableScrollableController _controller =
-      DraggableScrollableController();
+  // final DraggableScrollableController _controller =
+  //     DraggableScrollableController();
   _ToolsBarMode _mode = _ToolsBarMode.hide;
 
-  static double initialChildSize = 0.30;
+  // static double initialChildSize = 0.30;
 
   @override
   void initState() {
     super.initState();
     // _controller = DraggableScrollableController();
-    _controller.addListener(() {
-      print(_controller.size);
-    });
   }
 
   @override
