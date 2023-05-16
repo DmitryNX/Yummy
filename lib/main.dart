@@ -30,6 +30,7 @@ class MyApp extends StatelessWidget {
       theme: const AppThemeLight().data(),
       darkTheme: const AppThemeDark().data(),
       color: AppColors.mainDark,
+      debugShowCheckedModeBanner: false,
       home: BlocProvider<ColorsCubit>(
         create: (context) => di.sl<ColorsCubit>(),
         child: const MainScreen(),
