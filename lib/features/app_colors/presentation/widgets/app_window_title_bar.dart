@@ -2,6 +2,7 @@ import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import 'about_dialog_button.dart';
 
 class AppWindowTitleBar extends StatelessWidget {
   const AppWindowTitleBar({Key? key}) : super(key: key);
@@ -38,6 +39,8 @@ class AppWindowTitleBar extends StatelessWidget {
               ],
             ),
           )),
+          const AboutDialogButton(),
+          const SizedBox(width: 10),
           MinimizeWindowButton(colors: _colors),
           MaximizeWindowButton(colors: _colors),
           CloseWindowButton(colors: _colorsClose),
