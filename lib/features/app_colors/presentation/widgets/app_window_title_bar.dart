@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import 'about_dialog_button.dart';
+import 'app_icon.dart';
 
 class AppWindowTitleBar extends StatelessWidget {
   const AppWindowTitleBar({Key? key}) : super(key: key);
@@ -32,10 +33,11 @@ class AppWindowTitleBar extends StatelessWidget {
         // crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Expanded(child: MoveWindow(
-            child: const Row(
+            child: Row(
               children: <Widget>[
-                SizedBox(width: 10),
-                Text('Yummy'),
+                _buildAppIcon(),
+                const SizedBox(width: 10),
+                const Text('Yummy'),
               ],
             ),
           )),
@@ -46,6 +48,13 @@ class AppWindowTitleBar extends StatelessWidget {
           CloseWindowButton(colors: _colorsClose),
         ],
       ),
+    );
+  }
+
+  Widget _buildAppIcon() {
+    return const Padding(
+      padding: EdgeInsets.all(4.0),
+      child: AppIcon(),
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yummy/core/manifest/manifest.dart';
+import 'package:yummy/features/app_colors/presentation/widgets/app_icon.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import 'simple_icon_button.dart';
@@ -15,6 +16,7 @@ class AboutDialogButton extends StatelessWidget {
       onPressed: (context) {
         showAboutDialog(
           context: context,
+          applicationIcon: const AppIcon(side: 48),
           children: <Widget>[
             const Text(Manifest.description),
             const SizedBox(height: 10),
