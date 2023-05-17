@@ -2,7 +2,7 @@ class Manifest {
   Manifest._();
 
   static const version = '1.0.0';
-  static const buildDate = '2023.05.16';
+  static const buildDate = '2023.05.17';
 
   static const description = 'Yummy is the color palette generator which helps You create beautiful UI design.';
 

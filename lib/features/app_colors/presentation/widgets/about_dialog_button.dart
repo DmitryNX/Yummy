@@ -17,13 +17,11 @@ class AboutDialogButton extends StatelessWidget {
         showAboutDialog(
           context: context,
           applicationIcon: const AppIcon(side: 48),
+          applicationVersion: '${Manifest.version} - ${Manifest.buildDate}',
           children: <Widget>[
             const Text(Manifest.description),
             const SizedBox(height: 10),
-            const Text('Version: ${Manifest.version}'),
-            const Text('Build date: ${Manifest.buildDate}'),
-            const SizedBox(height: 10),
-            const Text('License:'),
+            const Text('License: MIT'),
             const SizedBox(height: 5),
             Container(
               padding: const EdgeInsets.all(10),
