@@ -6,7 +6,6 @@ class Manifest {
 
   static const description = 'Yummy is the color palette generator which helps You create beautiful UI design.';
 
-
   static const license =
 '''
 Copyright 2023 Dmitry Nesterov
