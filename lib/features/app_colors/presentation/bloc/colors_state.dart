@@ -18,15 +18,17 @@ class LoadedColorsState extends ColorsState {
   final List<ColorsEntity> items;
   final int currentIndex;
   final ColorNames currentColorName;
+  final CalcMode calcMode;
 
   const LoadedColorsState({
    required this.items,
     this.currentIndex = 0,
     this.currentColorName = ColorNames.mainLight,
+    this.calcMode = CalcMode.auto,
   });
 
   @override
-  List<Object> get props => [items, currentIndex, currentColorName];
+  List<Object> get props => [items, currentIndex, currentColorName, calcMode];
 
   ColorsEntity get currentColorsEntity => items[currentIndex];
 
@@ -54,11 +56,13 @@ class LoadedColorsState extends ColorsState {
     List<ColorsEntity>? items,
     int? currentIndex,
     ColorNames? currentColorName,
+    CalcMode? calcMode,
   }) {
     return LoadedColorsState(
       items: items ?? this.items,
       currentIndex: currentIndex ?? this.currentIndex,
       currentColorName: currentColorName ?? this.currentColorName,
+      calcMode: calcMode ?? this.calcMode,
     );
   }
 }
