@@ -84,7 +84,7 @@ class ColorPalette extends StatelessWidget {
       children: <Widget>[
         _buildMainPalette(context, item),
         const SizedBox(height: 15),
-        _buildTargetPalette(item),
+        _buildTargetPalette(context, item),
         const SizedBox(height: 15),
         _buildVariantPalette(
           name: 'Main Light',
@@ -138,69 +138,69 @@ class ColorPalette extends StatelessWidget {
           name: 'Main Light',
           color: item.mainLight,
           textColor: item.mainDark,
-          onPressed: () {
-            context.read<ColorsCubit>()
-              .setCurrentColorItem(ColorNames.mainLight);
-          },
+          onPressed: () => _setCurrentColorItemAuto(context, ColorNames.mainLight),
         ),
         const SizedBox(width: 5),
         ColorPaletteItem(
           name: 'Main Dark',
           color: item.mainDark,
           textColor: item.mainLight,
-          onPressed: () {
-            context
-                .read<ColorsCubit>()
-                .setCurrentColorItem(ColorNames.mainDark);
-          },
+          onPressed: () => _setCurrentColorItemAuto(context, ColorNames.mainDark),
         ),
       ],
     );
   }
 
-  Widget _buildTargetPalette(ColorsEntity item) {
+  Widget _buildTargetPalette(BuildContext context, ColorsEntity item) {
     return Row(
       children: <Widget>[
         ColorPaletteItem(
           name: 'Main Light',
           color: item.mainLight,
           textColor: item.mainDark,
+          onPressed: () => _setCurrentColorItemManual(context, ColorNames.mainLight),
         ),
         const SizedBox(width: 5),
         ColorPaletteItem(
           name: 'Mid Light',
           color: item.midLight,
           textColor: item.mainDark,
+          onPressed: () => _setCurrentColorItemManual(context, ColorNames.midLight),
         ),
         const SizedBox(width: 5),
         ColorPaletteItem(
           name: 'Mid Dark',
           color: item.midDark,
           textColor: item.mainLight,
+          onPressed: () => _setCurrentColorItemManual(context, ColorNames.midDark),
         ),
         const SizedBox(width: 5),
         ColorPaletteItem(
           name: 'Main Dark',
           color: item.mainDark,
           textColor: item.mainLight,
+          onPressed: () => _setCurrentColorItemManual(context, ColorNames.mainDark),
         ),
         const SizedBox(width: 15),
         ColorPaletteItem(
           name: 'Act Info',
           color: item.actInfo,
           textColor: item.mainLight,
+          onPressed: () => _setCurrentColorItemManual(context, ColorNames.actInfo),
         ),
         const SizedBox(width: 5),
         ColorPaletteItem(
           name: 'Act Success',
           color: item.actSuccess,
           textColor: item.mainLight,
+          onPressed: () => _setCurrentColorItemManual(context, ColorNames.actSuccess),
         ),
         const SizedBox(width: 5),
         ColorPaletteItem(
           name: 'Act Wrong',
           color: item.actWrong,
           textColor: item.mainLight,
+          onPressed: () => _setCurrentColorItemManual(context, ColorNames.actWrong),
         ),
       ],
     );
@@ -256,5 +256,13 @@ class ColorPalette extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  void _setCurrentColorItemAuto(BuildContext context, ColorNames colorName) {
+    context.read<ColorsCubit>().setCurrentColorItemAuto(colorName);
+  }
+
+  void _setCurrentColorItemManual(BuildContext context, ColorNames colorName) {
+    context.read<ColorsCubit>().setCurrentColorItemManual(colorName);
   }
 }

@@ -16,7 +16,6 @@ void main() async {
     const initialSize = Size(1280, 720);
     appWindow.size = initialSize;
     appWindow.minSize = initialSize;
-
   });
 }
 

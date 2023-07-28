@@ -5,6 +5,7 @@ import 'package:yummy/core/error/failure.dart';
 import 'package:yummy/core/generator/color_generator.dart';
 
 import '../../data/models/colors_model.dart';
+import '../../domain/entities/calc_mode.dart';
 import '../../domain/entities/color_names.dart';
 import '../../domain/entities/colors_entity.dart';
 import '../../domain/usecases/calculate_color_set_usecase.dart';
@@ -51,13 +52,13 @@ class ColorsCubit extends Cubit<ColorsState> {
           );
           emit(
             oldState?.copyWith(
-              items: items,
-              currentIndex: currentIndex,
-            )
-            ?? LoadedColorsState(
-              items: items,
-              currentIndex: currentIndex,
-            ),
+                  items: items,
+                  currentIndex: currentIndex,
+                ) ??
+                LoadedColorsState(
+                  items: items,
+                  currentIndex: currentIndex,
+                ),
           );
         }
       },
@@ -146,11 +147,10 @@ class ColorsCubit extends Cubit<ColorsState> {
   }
 
   bool _nameIsNotContains(String name) {
-    return !_getLoadedStateUnchecked().items
-        .any((item) => item.name == name);
+    return !_getLoadedStateUnchecked().items.any((item) => item.name == name);
   }
 
-  Future<void> calculateColorSet({
+  Future<void> calculateColorSetAuto({
     required Color mainLight,
     required Color mainDark,
   }) async {
@@ -172,6 +172,33 @@ class ColorsCubit extends Cubit<ColorsState> {
     );
   }
 
+  Future<void> calculateColorSetManual({
+    required ColorNames colorName,
+    required Color value,
+  }) async {
+    if (state is! LoadedColorsState) return;
+
+    final curState = _getLoadedStateUnchecked();
+    final entity = curState.currentColorsEntity;
+
+    final result = ColorsModel(
+      name: entity.name,
+      created: entity.created,
+      mainDark: colorName == ColorNames.mainDark ? value : entity.mainDark,
+      midDark: colorName == ColorNames.midDark ? value : entity.midDark,
+      midLight: colorName == ColorNames.midLight ? value : entity.midLight,
+      mainLight: colorName == ColorNames.mainLight ? value : entity.mainLight,
+      actInfo: colorName == ColorNames.actInfo ? value : entity.actInfo,
+      actSuccess:
+          colorName == ColorNames.actSuccess ? value : entity.actSuccess,
+      actWrong: colorName == ColorNames.actWrong ? value : entity.actWrong,
+    );
+
+    emit(curState.copyWith(
+      items: _replaceInItemsAndGet(result),
+    ));
+  }
+
   Future<void> setCurrentIndex(int index) async {
     if (!_isLoadedState()) return;
 
@@ -181,10 +208,23 @@ class ColorsCubit extends Cubit<ColorsState> {
     emit(oldState.copyWith(currentIndex: index));
   }
 
-  Future<void> setCurrentColorItem(ColorNames colorName) async {
+  Future<void> setCurrentColorItemAuto(ColorNames colorName) async {
     if (!_isLoadedState()) return;
     emit(
-      _getLoadedStateUnchecked().copyWith(currentColorName: colorName),
+      _getLoadedStateUnchecked().copyWith(
+        currentColorName: colorName,
+        calcMode: CalcMode.auto,
+      ),
+    );
+  }
+
+  Future<void> setCurrentColorItemManual(ColorNames colorName) async {
+    if (!_isLoadedState()) return;
+    emit(
+      _getLoadedStateUnchecked().copyWith(
+        currentColorName: colorName,
+        calcMode: CalcMode.manual,
+      ),
     );
   }
 
@@ -193,14 +233,25 @@ class ColorsCubit extends Cubit<ColorsState> {
 
     final curState = _getLoadedStateUnchecked();
     final colorEntity = curState.currentColorsEntity;
-    await calculateColorSet(
-      mainLight: curState.currentColorName == ColorNames.mainLight
-          ? color
-          : colorEntity.mainLight,
-      mainDark: curState.currentColorName == ColorNames.mainDark
-          ? color
-          : colorEntity.mainDark,
-    );
+
+    switch (curState.calcMode) {
+      case CalcMode.auto:
+        await calculateColorSetAuto(
+          mainLight: curState.currentColorName == ColorNames.mainLight
+              ? color
+              : colorEntity.mainLight,
+          mainDark: curState.currentColorName == ColorNames.mainDark
+              ? color
+              : colorEntity.mainDark,
+        );
+        break;
+      case CalcMode.manual:
+        await calculateColorSetManual(
+          colorName: curState.currentColorName,
+          value: color,
+        );
+        break;
+    }
 
     await saveCurrentColorSet();
   }
@@ -224,22 +275,18 @@ class ColorsCubit extends Cubit<ColorsState> {
 
   List<ColorsEntity> _replaceInItemsAndGet(ColorsEntity entity) {
     return _getCurrentItemsCopy()
-      .map(
-        (item) => item.name == entity.name ? entity : item,
-      )
-      .toList();
+        .map(
+          (item) => item.name == entity.name ? entity : item,
+        )
+        .toList();
   }
 
   List<ColorsEntity> _getCurrentItemsCopy() {
-    return _isLoadedState()
-      ? [..._getLoadedStateUnchecked().items]
-      : [];
+    return _isLoadedState() ? [..._getLoadedStateUnchecked().items] : [];
   }
 
   int _getCurrentIndex() {
-    return _isLoadedState()
-      ? _getLoadedStateUnchecked().currentIndex
-      : 0;
+    return _isLoadedState() ? _getLoadedStateUnchecked().currentIndex : 0;
   }
 
   int _fixCurrentIndex({
