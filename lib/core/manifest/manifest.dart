@@ -1,8 +1,8 @@
 class Manifest {
   Manifest._();
 
-  static const version = '1.0.0';
-  static const buildDate = '2023.05.17';
+  static const version = '1.1.0';
+  static const buildDate = '2023.07.28';
 
   static const description = 'Yummy is the color palette generator which helps You create beautiful UI design.';
 
