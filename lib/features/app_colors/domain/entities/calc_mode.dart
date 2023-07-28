@@ -1,0 +1,4 @@
+enum CalcMode {
+  auto,
+  manual,
+}
